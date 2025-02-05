@@ -103,6 +103,7 @@
         app:layout_constraintStart_toStartOf="@+id/dateTitle"
         app:layout_constraintTop_toBottomOf="@+id/dateTitle"
 
+
         />
 
     <TextView
@@ -134,8 +135,11 @@
 
     <Button
         android:id="@+id/saveBtn"
+
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="?attr/colorAccent"
+        android:textColor="@color/design_default_color_on_primary"
         android:text="Save"
         android:textSize="20sp"
         android:textStyle="bold"

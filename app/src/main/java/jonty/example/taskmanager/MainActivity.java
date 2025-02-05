@@ -18,10 +18,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
 
 import jonty.example.taskmanager.R;
 
@@ -60,12 +71,52 @@ public class MainActivity extends AppCompatActivity {
                 editor.putString("desc", desc);
                 editor.apply();
 
-                Log.d("toDoApp", "Save button clicked!");
+
+                //SQLite
+                TasksDB db = TasksDB.getInstance(MainActivity.this);
+                final Task task1 = new Task();
+                task1.title = "test_title";
+                task1.description = "a very meaningful description";
+
+                Executor myExecutor = Executors.newSingleThreadExecutor();
+                myExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        db.tasksDAO().insert(task1);
+                    }
+                });
+
+                //Print data to log cat
+                LiveData<List<Task>> tasks = db.tasksDAO().getAll();
+                tasks.observe(MainActivity.this, new Observer<List<Task>>() {
+                    @Override
+                    public void onChanged(List<Task> tasks) {
+                        for (Task task : tasks) {
+                            Log.d("ToDoAPP", task.title + " " + task.description + "");
+                        }
+                    }
+                });
             }
         });
 
+        //File Storage
+        String fileName = "file.txt";
+        String contents ="this is a test";
+
+        File file = new File(getFilesDir(), fileName);
+
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
+            osw.write(contents);
+            osw.close();
+        }
+        catch (FileNotFoundException e) { e.printStackTrace(); }
+        catch (IOException e) { e.printStackTrace(); }
+
 
     }
+
     public void onDateClick(View view) {
         DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -86,8 +137,8 @@ public class MainActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    public void onTimeClick(View view){
-        TimePickerDialog.OnTimeSetListener listener =  new TimePickerDialog.OnTimeSetListener() {
+    public void onTimeClick(View view) {
+        TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 EditText timeView = findViewById(R.id.timeInputEditText);
