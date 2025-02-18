@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -75,8 +76,10 @@ public class MainActivity extends AppCompatActivity {
                 //SQLite
                 TasksDB db = TasksDB.getInstance(MainActivity.this);
                 final Task task1 = new Task();
-                task1.title = "test_title";
-                task1.description = "a very meaningful description";
+                task1.title = title;
+                task1.description = desc;
+                task1.date = date;
+
 
                 Executor myExecutor = Executors.newSingleThreadExecutor();
                 myExecutor.execute(new Runnable() {
@@ -117,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     public void onDateClick(View view) {
         DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -137,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+
     public void onTimeClick(View view) {
         TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -145,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
                 timeView.setText(hourOfDay + ":" + minute);
             }
         };
+
+
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, listener, 0, 0, true);
         timePickerDialog.show();
     }

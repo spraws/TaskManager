@@ -7,12 +7,12 @@ import androidx.room.Query;
 import java.util.List;
 @Dao
 public interface TasksDAO {
-    //retrieves a list of all tasks
-    @Query("SELECT * FROM task")
-    LiveData<List<Task>> getAll();
-    //adds a task to the database
     @Insert
     void insert(Task task);
+    @Query("SELECT * FROM Task")
+    LiveData<List<Task>> getAll();
+    @Query("SELECT * FROM Task")
+    LiveData<List<Task>> observeAll();
 
 
 }
