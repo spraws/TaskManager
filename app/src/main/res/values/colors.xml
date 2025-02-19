@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+<!--        &lt;!&ndash; Primary Color (Dark Blue) &ndash;&gt;-->
+<!--        <color name="colorPrimary">#003366</color>-->
+<!--        <color name="colorPrimaryDark">#002244</color>-->
+
+<!--        &lt;!&ndash; Secondary Color (Light Blue) &ndash;&gt;-->
+<!--        <color name="colorAccent">#00B0FF</color>-->
+
+<!--        &lt;!&ndash; Text Colors &ndash;&gt;-->
+<!--        <color name="colorTextPrimary">#FFFFFF</color> &lt;!&ndash; White for primary text &ndash;&gt;-->
+<!--        <color name="colorTextSecondary">#B0BEC5</color> &lt;!&ndash; Light Grey for secondary text &ndash;&gt;-->
+
+<!--        &lt;!&ndash; Background and Surface Colors &ndash;&gt;-->
+<!--        <color name="colorBackground">#121212</color> &lt;!&ndash; Dark background &ndash;&gt;-->
+<!--        <color name="colorSurface">#1C1C1C</color> &lt;!&ndash; Surface elements (cards, dialogs) &ndash;&gt;-->
+
+<!--        &lt;!&ndash; Divider Color &ndash;&gt;-->
+<!--        <color name="colorDivider">#2C2C2C</color> &lt;!&ndash; Divider lines &ndash;&gt;-->
+
+<!--        &lt;!&ndash; Button Colors &ndash;&gt;-->
+<!--        <color name="colorButtonBackground">#00B0FF</color> &lt;!&ndash; Light Blue button &ndash;&gt;-->
+<!--        <color name="colorButtonText">#FFFFFF</color> &lt;!&ndash; White button text &ndash;&gt;-->
+
+<!--        &lt;!&ndash; Status Bar Colors &ndash;&gt;-->
+<!--        <color name="colorStatusBar">#002244</color> &lt;!&ndash; Dark Blue for status bar &ndash;&gt;-->
+
+
 </resources>

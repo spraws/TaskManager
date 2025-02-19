@@ -21,7 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
 
             <!-- Image on the left -->
             <ImageView
@@ -37,7 +38,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_margin="5dp"
+                >
 
                 <!-- Title -->
                 <TextView
@@ -45,7 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Title"
-                    android:textSize="25sp"
+                    android:textSize="35sp"
                     android:textStyle="bold" />
 
                 <TextView
