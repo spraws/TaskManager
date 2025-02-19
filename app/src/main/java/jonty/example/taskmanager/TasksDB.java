@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Task.class}, version = 1)
+@Database(entities = {Task.class}, version = 2)
 public abstract class TasksDB extends RoomDatabase {
     public abstract TasksDAO tasksDAO();
     private static final String DB_NAME = "tasks_database_name";

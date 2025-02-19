@@ -1,21 +1,31 @@
 package jonty.example.taskmanager;
-
 import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.Instrumentation;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
 import android.widget.TimePicker;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -38,7 +48,8 @@ import java.util.concurrent.Executors;
 import jonty.example.taskmanager.R;
 
 public class MainActivity extends AppCompatActivity {
-
+    ActivityResultLauncher<Intent> launchCameraActivity;
+    Uri imageUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +61,24 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        Button saveBtn = findViewById(R.id.saveBtn);
+        launchCameraActivity = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult activityResult) {
+                        if (activityResult.getResultCode() == RESULT_OK) {
+                            Log.d("ToDoApp", "picture stored in: " + imageUri);
+                            ImageView taskImage = findViewById(R.id.taskImage);;
+                            taskImage.setImageURI(imageUri);
+
+                        }
+                    }
+                });
+
+
+
+
+    Button saveBtn = findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
                 task1.title = title;
                 task1.description = desc;
                 task1.date = date;
+                task1.time = time;
+                task1.imageURI = imageUri.toString();
 
 
                 Executor myExecutor = Executors.newSingleThreadExecutor();
@@ -99,12 +129,15 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+                finish();
+
+
             }
         });
 
         //File Storage
         String fileName = "file.txt";
-        String contents ="this is a test";
+        String contents = "this is a test";
 
         File file = new File(getFilesDir(), fileName);
 
@@ -113,11 +146,11 @@ public class MainActivity extends AppCompatActivity {
             OutputStreamWriter osw = new OutputStreamWriter(fos);
             osw.write(contents);
             osw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (FileNotFoundException e) { e.printStackTrace(); }
-        catch (IOException e) { e.printStackTrace(); }
-
-
     }
 
 
@@ -156,4 +189,19 @@ public class MainActivity extends AppCompatActivity {
         timePickerDialog.show();
     }
 
+
+    //Camera logic
+    public void onCameraClick(View view) {
+//        Log.d("ToDoApp", "onCameraClick");
+        String imageFileName = "JPEG_" + System.currentTimeMillis() + ".jpg";
+        File imageFile = new File(getFilesDir(), imageFileName);
+        imageUri = FileProvider.getUriForFile(this, ".fileprovider", imageFile);
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        launchCameraActivity.launch(takePictureIntent);
+    }
+
+
+
 }
+

@@ -17,4 +17,10 @@ public class Task {
 
     @ColumnInfo(name = "date")
     public String date;
+
+    @ColumnInfo(name = "time")
+    public String time;
+
+    @ColumnInfo(name = "image")
+    public String imageURI;
 }

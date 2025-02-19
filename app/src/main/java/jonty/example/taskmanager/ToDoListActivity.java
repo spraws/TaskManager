@@ -1,9 +1,11 @@
 package jonty.example.taskmanager;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,10 +43,28 @@ public class ToDoListActivity extends AppCompatActivity {
                 //Loop through the list of tasks.
                 for (Task task : tasks) {
                 //Create a simple TextView using the task title
-                    TextView textView = new TextView(getApplicationContext());
-                    textView.setText(task.title);
-                    //Add the TextView to the LinearLayout
-                    linearLayout.addView(textView);
+//                    TextView textView = new TextView(getApplicationContext());
+//                    textView.setText(task.title);
+//                    linearLayout.addView(textView);
+
+                    View listView =
+                            getLayoutInflater().inflate(R.layout.task_layout, linearLayout, false);
+                    TextView titleView = listView.findViewById(R.id.taskListTitle);
+                    TextView descView = listView.findViewById(R.id.taskListDesc);
+                    ImageView imageView = listView.findViewById(R.id.taskListImage);
+
+                    titleView.setText(task.title);
+                    descView.setText(task.description);
+                    imageView.setImageURI(Uri.parse(task.imageURI));
+
+                    linearLayout.addView(listView);
+
+                    //Text Styling
+//                    textView.setText(task.title);
+//                    textView.setTextSize(25);
+//                    textView.setPadding(10, 10, 10, 10);
+//                    textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+//                    textView.setTextColor(getResources().getColor(R.color.white));
                 }
             }
         });
