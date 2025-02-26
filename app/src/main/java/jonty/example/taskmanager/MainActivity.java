@@ -1,4 +1,5 @@
 package jonty.example.taskmanager;
+
 import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -50,6 +51,7 @@ import jonty.example.taskmanager.R;
 public class MainActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> launchCameraActivity;
     Uri imageUri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onActivityResult(ActivityResult activityResult) {
                         if (activityResult.getResultCode() == RESULT_OK) {
                             Log.d("ToDoApp", "picture stored in: " + imageUri);
-                            ImageView taskImage = findViewById(R.id.taskImage);;
+                            ImageView taskImage = findViewById(R.id.taskImage);
+                            ;
                             taskImage.setImageURI(imageUri);
 
                         }
@@ -76,9 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-
-
-    Button saveBtn = findViewById(R.id.saveBtn);
+        Button saveBtn = findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         launchCameraActivity.launch(takePictureIntent);
     }
-
 
 
 }
