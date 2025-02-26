@@ -59,7 +59,15 @@
                     android:textColor="@android:color/darker_gray"
                     android:textSize="14sp" />
             </LinearLayout>
+
         </LinearLayout>
+            <CheckBox
+                android:id="@+id/taskListDone"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="end"
+                />
     </androidx.cardview.widget.CardView>
 
 

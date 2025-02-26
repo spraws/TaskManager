@@ -23,4 +23,7 @@ public class Task {
 
     @ColumnInfo(name = "image")
     public String imageURI;
+
+    @ColumnInfo(name = "done")
+    public boolean done;
 }

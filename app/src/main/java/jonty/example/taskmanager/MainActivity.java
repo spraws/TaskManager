@@ -1,5 +1,4 @@
 package jonty.example.taskmanager;
-
 import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -18,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TimePicker;
-
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -32,9 +30,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-
 import com.google.android.material.textfield.TextInputEditText;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -44,8 +40,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
-
 import jonty.example.taskmanager.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -110,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 task1.date = date;
                 task1.time = time;
                 task1.imageURI = imageUri.toString();
+                task1.done = false;
 
 
                 Executor myExecutor = Executors.newSingleThreadExecutor();
