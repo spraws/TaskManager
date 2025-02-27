@@ -26,6 +26,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.task_layout, parent, false);
         return new ViewHolder(view);
+
     }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -83,5 +84,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
     }
     
 
-
+    public void deleteTask(int position) {
+        final Task task = tasks.get(position);
+        Executor myExecutor = Executors.newSingleThreadExecutor();
+        myExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                db.tasksDAO().deleteTask(task);
+            }
+        });
+    }
 }
