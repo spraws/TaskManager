@@ -74,7 +74,7 @@ public class ToDoListActivity extends AppCompatActivity {
 
     public void onNewTaskClicked(View view) {
         Log.d("ToDoApp", "onNewTaskClicked");
-        //create explicit intent for ToDoAcivity
+        //create explicit intent for ToDoActivity
         Intent taskIntent = new Intent(this, MainActivity.class);
         startActivity(taskIntent);
     }
