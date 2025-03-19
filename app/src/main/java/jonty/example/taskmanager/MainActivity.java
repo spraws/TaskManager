@@ -1,4 +1,5 @@
 package jonty.example.taskmanager;
+
 import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TimePicker;
+
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -30,7 +32,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+
 import com.google.android.material.textfield.TextInputEditText;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -40,6 +44,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
 import jonty.example.taskmanager.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -87,13 +92,13 @@ public class MainActivity extends AppCompatActivity {
                 String time = timeView.getText().toString();
                 String desc = descView.getText().toString();
 
-                SharedPreferences sharedPreferences = getSharedPreferences("toDoApp", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("title", title);
-                editor.putString("date", date);
-                editor.putString("time", time);
-                editor.putString("desc", desc);
-                editor.apply();
+//                SharedPreferences sharedPreferences = getSharedPreferences("toDoApp", MODE_PRIVATE);
+//                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                editor.putString("title", title);
+//                editor.putString("date", date);
+//                editor.putString("time", time);
+//                editor.putString("desc", desc);
+//                editor.apply();
 
 
                 //SQLite
@@ -148,8 +153,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-
     public void onDateClick(View view) {
         DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -170,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-
     public void onTimeClick(View view) {
         TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -184,7 +186,6 @@ public class MainActivity extends AppCompatActivity {
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, listener, 0, 0, true);
         timePickerDialog.show();
     }
-
 
     //Camera logic
     public void onCameraClick(View view) {

@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:onClick="onDateClick"
     tools:context=".MainActivity">
 
     <TextView
@@ -135,11 +134,11 @@
 
     <ImageView
         android:id="@+id/taskImage"
-        android:layout_width="285dp"
-        android:layout_height="252dp"
+        android:layout_width="369dp"
+        android:layout_height="387dp"
         android:layout_margin="20dp"
-        android:scaleType="centerCrop"
         android:outlineProvider="background"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timeInputEditText"
@@ -165,7 +164,7 @@
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="20dp"
         android:clickable="true"
         android:onClick="onCameraClick"
         app:layout_constraintBottom_toBottomOf="parent"
