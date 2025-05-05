@@ -15,8 +15,7 @@ public abstract class TasksDB extends RoomDatabase {
     private static final String DB_NAME = "tasks_database_name";
     private static TasksDB db;
     //Return an database instance.
-// If the database instance already exists it return the existing instance.
-// If not then it creates a new instance and returns that.
+
     public static TasksDB getInstance(Context context)
     {
         if (db == null) db =buildDatabaseInstance(context);

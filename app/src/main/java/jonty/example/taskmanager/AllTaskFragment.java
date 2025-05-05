@@ -15,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.List;
 
 public class AllTaskFragment extends Fragment {
@@ -31,46 +33,66 @@ public class AllTaskFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_all_task, container, false);
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle
-            savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        TasksDB db = TasksDB.getInstance(view.getContext());
+ @Override
+ public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+     super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = view.findViewById(R.id.taskListRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        taskListAdapter = new TaskListAdapter();
-        recyclerView.setAdapter(taskListAdapter);
-        //Observe for changes in db
-        LiveData<List<Task>> tasks = db.tasksDAO().observeAll();
-        tasks.observe(getViewLifecycleOwner(), new Observer<List<Task>>() {
-            @Override
-            public void onChanged(List<Task> tasks) {
-                taskListAdapter.setTaskList(db, tasks);
-            }
-        });
+     TasksDB db = TasksDB.getInstance(view.getContext());
+     recyclerView = view.findViewById(R.id.taskListRecyclerView);
+     recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+     taskListAdapter = new TaskListAdapter();
+     recyclerView.setAdapter(taskListAdapter);
 
-        androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback touchHelperCallback =
-                new androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback(0,
-                        androidx.recyclerview.widget.ItemTouchHelper.RIGHT) {
+     // Observe for changes in the database
+     FirebaseAuth auth = FirebaseAuth.getInstance();
+     final String[] currentUserId = {auth.getCurrentUser().getUid()};
 
-                    @Override
-                    public boolean onMove(@NonNull RecyclerView recyclerView,
-                                          @NonNull RecyclerView.ViewHolder viewHolder,
-                                          @NonNull RecyclerView.ViewHolder target) {
-                        return false;
-                    }
+     LiveData<List<Task>> tasks = db.tasksDAO().observeAll(currentUserId[0]);
+     tasks.observe(getViewLifecycleOwner(), new Observer<List<Task>>() {
+         @Override
+         public void onChanged(List<Task> tasks) {
+             taskListAdapter.setTaskList(db, tasks);
+         }
+     });
 
+     //clear the task list when the user signs out
+     auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+         @Override
+         public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+             if (firebaseAuth.getCurrentUser() != null) {
+                 String newUserId = firebaseAuth.getCurrentUser().getUid();
+                 if (!newUserId.equals(currentUserId[0])) {
+                     currentUserId[0] = newUserId;
+                     LiveData<List<Task>> newTasks = db.tasksDAO().observeAll(currentUserId[0]);
+                     newTasks.observe(getViewLifecycleOwner(), new Observer<List<Task>>() {
+                         @Override
+                         public void onChanged(List<Task> tasks) {
+                             taskListAdapter.setTaskList(db, tasks);
+                         }
+                     });
+                 }
+             } else {
+                 // Handle the case when the user is signed out
+                 currentUserId[0] = null;
+                 taskListAdapter.setTaskList(db, null); // Clear the task list
+             }
+         }
+     });
 
-                    @Override
-                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder,
-                                         int direction) {
-                        int swipePosition = viewHolder.getAdapterPosition();
-                        taskListAdapter.deleteTask(swipePosition);
-                    }
-                };
-// 5. Attach item touch callbacks to recyclerview
-        androidx.recyclerview.widget.ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchHelperCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-    }
+     //  swipe-to-delete
+     ItemTouchHelper.SimpleCallback touchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+         @Override
+         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+             return false;
+         }
+
+         @Override
+         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+             int swipePosition = viewHolder.getAdapterPosition();
+             taskListAdapter.deleteTask(swipePosition);
+         }
+     };
+     ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchHelperCallback);
+     itemTouchHelper.attachToRecyclerView(recyclerView);
+ }
 }

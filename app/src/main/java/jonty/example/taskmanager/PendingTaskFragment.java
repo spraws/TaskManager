@@ -15,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.List;
 
 
@@ -45,7 +47,8 @@ public class PendingTaskFragment extends Fragment {
         taskListAdapter = new TaskListAdapter();
         recyclerView.setAdapter(taskListAdapter);
 // 3. Observe for changes in the list of all tasks in the database
-        LiveData<List<Task>> tasks = db.tasksDAO().observePending();
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        LiveData<List<Task>> tasks = db.tasksDAO().observePending(currentUserId);
 //Handle any changes in the observer
         tasks.observe(getViewLifecycleOwner(), new Observer<List<Task>>() {
             @Override

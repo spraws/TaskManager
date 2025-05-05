@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TimePicker;
@@ -33,7 +34,10 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> launchCameraActivity;
     Uri imageUri;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        //Camera
         launchCameraActivity = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -77,7 +83,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+        //Map
 
+//        ImageButton mapBtn = findViewById(R.id.mapBtn);
+//            mapBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // open the MapActivity
+//                Intent intent = new Intent(MainActivity.this, OMapActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+
+        //Save
         Button saveBtn = findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
                 task1.time = time;
                 task1.imageURI = imageUri.toString();
                 task1.done = false;
+                task1.userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
 
 
                 Executor myExecutor = Executors.newSingleThreadExecutor();
@@ -120,39 +140,47 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                //Print data to log cat
-                LiveData<List<Task>> tasks = db.tasksDAO().getAll();
-                tasks.observe(MainActivity.this, new Observer<List<Task>>() {
-                    @Override
-                    public void onChanged(List<Task> tasks) {
-                        for (Task task : tasks) {
-                            Log.d("ToDoAPP", task.title + " " + task.description + "");
-                        }
-                    }
-                });
+//                //Print data to log cat
+//                LiveData<List<Task>> tasks = db.tasksDAO().getAll();
+//                tasks.observe(MainActivity.this, new Observer<List<Task>>() {
+//                    @Override
+//                    public void onChanged(List<Task> tasks) {
+//                        for (Task task : tasks) {
+//                            Log.d("ToDoAPP", task.title + " " + task.description + "");
+//                        }
+//                    }
+//                });
                 finish();
 
 
             }
         });
 
-        //File Storage
-        String fileName = "file.txt";
-        String contents = "this is a test";
 
-        File file = new File(getFilesDir(), fileName);
 
-        try {
-            FileOutputStream fos = new FileOutputStream(file);
-            OutputStreamWriter osw = new OutputStreamWriter(fos);
-            osw.write(contents);
-            osw.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
+
+
+    public void onMapButtonClick(View view) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.mapContainer, new MapFragment())
+                .commit();
+        findViewById(R.id.mapContainer).setVisibility(View.VISIBLE);
+        FloatingActionButton backBtn = findViewById(R.id.backButton);
+        backBtn.setVisibility(View.VISIBLE);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.mapContainer).setVisibility(View.GONE);
+                backBtn.setVisibility(View.GONE);
+            }
+        });
+
+
+
+    }
+
+    //Date and Time
     public void onDateClick(View view) {
         DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
             @Override

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Task {
     @PrimaryKey(autoGenerate = true)
-    public int uid;
+    public int id;
 
     @ColumnInfo(name = "title")
     public String title;
@@ -26,4 +26,7 @@ public class Task {
 
     @ColumnInfo(name = "done")
     public boolean done;
+
+    @ColumnInfo(name = "uid")
+    public String userId;
 }

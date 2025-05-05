@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -24,13 +26,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.util.Arrays;
 import java.util.List;
 
-
 public class ToDoListActivity extends AppCompatActivity {
+
 
     AllTaskFragment allTaskFragment = new AllTaskFragment();
     CompletedTaskFragment completedTaskFragment = new CompletedTaskFragment();
@@ -64,6 +70,17 @@ public class ToDoListActivity extends AppCompatActivity {
                         }
                         else if(id == R.id.page_todo) {
                             loadFragment(pendingTaskFragment);
+                            return true;
+                        }
+                        else if(id == R.id.page_map) {
+                            loadFragment(new MapFragment());
+                            return true;
+                        }
+                        else if(id == R.id.account_settings) {
+//                            Intent accountIntent = new Intent(ToDoListActivity.this, AccountSettings.class);
+//                            startActivity(accountIntent);
+//                            return true;
+                            loadFragment(new AccountSettingsFragment());
                             return true;
                         }
                         else return false;
